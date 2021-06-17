@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %} This is title {% endblock %}
+
+{% block content %}
+
+{% if messages %}
+
+      {% for message in messages %}
+        <br>
+        <!-- alert box section start -->
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <!-- alert box section end -->
+      {% endfor %}
+
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To do list - Home</title>
+    <br>
+    <form class="d-flex" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="To-Do-Item" aria-label="Search" name="item">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Add </button>
+          </form>
+     </form>
+
+    <br>
+
+    <!-- alert box section start
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    alert box section end -->
+    {% if all_items %}
+    <table class="table table-bordered table-info">
+        <tr class="table-header-dark">
+            <th> Description</th>
+            <th><Center>Status</Center></th>
+            <th></th>
+        </tr>
+        {% for things in all_items %}
+            {% if things.completed%}
+
+                <tr class="table-secondary">
+
+                    <td class="striker"><a href ="{% url 'edit' things.id %}">{{ things.item }}</a></td>
+                    <td><Center><a href ="{% url 'uncross' things.id %}">uncross</a></center></td>
+                    <td><center><button type="button" class="btn btn-outline-danger"><a href ="{% url 'delete' things.id %}">Delete</a></button></center></td>
+                    <!--<td><a href ="{% url 'delete' things.id %}">Delete</a></td>-->
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td><a href ="{% url 'edit' things.id %}">{{ things.item }}</a></td>
+                    <td><Center><a href ="{% url 'cross_off' things.id %}">cross off</a></center></td>
+                    <td><center><button type="button" class="btn btn-outline-danger"><a href ="{% url 'delete' things.id %}">Delete</a></button></center></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+
+    </table>
+
+    {% endif %}
+</head>
+<body>
+
+</body>
+</html>
+{% endblock %}
